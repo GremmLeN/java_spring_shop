@@ -52,7 +52,7 @@ public class ShoppingCartService {
 
     public void setProductCount(HttpSession session, Long productId, Long quantity) {
         Product product = productService.getProductById(productId);
-        setProductCount(session, productId, quantity);
+        setProductCount(session, product, quantity);
     }
 
     public void setProductCount(HttpSession session, Product product, Long quantity) {

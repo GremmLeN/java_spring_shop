@@ -1,6 +1,9 @@
 package com.geekbrains.geekspring.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -43,10 +46,16 @@ public class Order {
     @Column(name = "delivery_date")
     private LocalDateTime deliveryDate;
 
+    @CreationTimestamp
     @Column(name = "create_at")
     private LocalDateTime createdAt;
 
+    @UpdateTimestamp
     @Column(name = "update_at")
     private LocalDateTime updatedAt;
+
+    @JsonIgnore
+    @Transient
+    private boolean confirmed;
 
 }

@@ -1,6 +1,7 @@
 package com.geekbrains.geekspring.services;
 
 import com.geekbrains.geekspring.entities.Order;
+import com.geekbrains.geekspring.entities.OrderItem;
 import com.geekbrains.geekspring.entities.ShoppingCart;
 import com.geekbrains.geekspring.entities.User;
 import com.geekbrains.geekspring.repositories.OrderRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,8 +30,16 @@ public class OrderService {
 
     @Transactional
     public Order makeOrder(ShoppingCart cart, User user) {
-        //TODO: домашнее задание
-        return new Order();
+        Order order = new Order();
+        order.setUser(user);
+        order.setStatus(orderStatusService.getStatusById(1L));
+        order.setPrice(cart.getTotalCost());
+        order.setOrderItems(new ArrayList<>(cart.getItems()));
+        for (OrderItem o : cart.getItems()) {
+            o.setOrder(order);
+        }
+
+        return order;
     }
 
     public List<Order> getAllOrders() {
@@ -41,8 +51,9 @@ public class OrderService {
     }
 
     public Order saveOrder(Order order) {
-        //TODO: домашнее задание *
-        return order;
+        Order orderOut = orderRepository.save(order);
+        orderOut.setConfirmed(true);
+        return orderOut;
     }
 
     public Order changeOrderStatus(Order order, Long statusId) {
