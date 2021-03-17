@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -25,6 +26,9 @@ public class ImageController {
             return null;
         }
         File initialFile = new File(UPLOADED_FOLDER + imageName);
-        return new FileInputStream(initialFile).readAllBytes();
+        byte[] bytes = new byte[(int) initialFile.length()];
+        DataInputStream dataInputStream = new DataInputStream(new FileInputStream(initialFile));
+        dataInputStream.readFully(bytes);
+        return bytes;
     }
 }
